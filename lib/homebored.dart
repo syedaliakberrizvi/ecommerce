@@ -1,11 +1,23 @@
+import 'package:final_project/product-detail.dart';
+import 'package:final_project/widgets/custom_header.dart';
 import 'package:final_project/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
 class Homebored extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+  final VoidCallback? onBackPressed;
+
+  const Homebored({required this.navigatorKey, this.onBackPressed});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: CustomHeader(
+          showDrawerIcon: true,
+          navigatorKey: navigatorKey,
+          onBackPressed: onBackPressed,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -13,15 +25,6 @@ class Homebored extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.line_weight_rounded),
-                      Spacer(),
-                      Image.asset("projectimages/stylish.png"),
-                      Spacer(),
-                      Icon(Icons.account_circle_outlined),
-                    ],
-                  ),
                   SizedBox(height: 15),
                   TextField(
                     decoration: InputDecoration(
@@ -54,22 +57,27 @@ class Homebored extends StatelessWidget {
                     child: Row(
                       children: [
                         categoryItem(
+                          context,
                           "projectimages/circle-image-1.png",
                           "Beauty",
                         ),
                         categoryItem(
+                          context,
                           "projectimages/circle-image-2.png",
                           "Fashion",
                         ),
                         categoryItem(
+                          context,
                           "projectimages/circle-image-3.png",
                           "Kids",
                         ),
                         categoryItem(
+                          context,
                           "projectimages/circle-image-4.png",
                           "Mens",
                         ),
                         categoryItem(
+                          context,
                           "projectimages/circle-image-5.png",
                           "Womens",
                         ),
@@ -174,15 +182,32 @@ class Homebored extends StatelessWidget {
   }
 
   // Reusable widget for category item
-  Widget categoryItem(String imagePath, String label) {
+  Widget categoryItem(BuildContext context, String imagePath, String label) {
     return Padding(
       padding: const EdgeInsets.only(right: 15.0),
-      child: Column(
-        children: [
-          Image.asset(imagePath, height: 60, width: 60),
-          SizedBox(height: 5),
-          Text(label),
-        ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (_) => ProductDetail(
+                    imagePath: imagePath,
+                    title: label,
+                    description: "Sample description here",
+                    price: "RS/2500",
+                    product_detail: "Full product detail goes here",
+                  ),
+            ),
+          );
+        },
+        child: Column(
+          children: [
+            Image.asset(imagePath, height: 60, width: 60),
+            SizedBox(height: 5),
+            Text(label),
+          ],
+        ),
       ),
     );
   }

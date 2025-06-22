@@ -3,20 +3,6 @@ import 'package:final_project/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          "Welcome to Home Screen!",
-          style: TextStyle(fontSize: 30, color: Colors.deepPurple),
-        ),
-      ),
-    );
-  }
-}
-
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -34,8 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 50),
-            Text(
+            const SizedBox(height: 50),
+
+            const Text(
               "Welcome Back",
               style: TextStyle(
                 color: Colors.pink,
@@ -43,20 +30,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               "Login to continue",
               style: TextStyle(color: Colors.pink, fontSize: 13),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-            // Email Field
+            // Email
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Email Address",
                     style: TextStyle(
                       color: Colors.pink,
@@ -64,10 +51,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   TextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(
                         Icons.email_outlined,
@@ -78,15 +65,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
 
-            // Password Field
+            const SizedBox(height: 20),
+
+            // Password
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Password",
                     style: TextStyle(
                       color: Colors.pink,
@@ -94,13 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   TextField(
                     controller: _passwordController,
                     obscureText: _obscureText,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(
                         Icons.lock_outline_rounded,
                         color: Colors.pink,
                       ),
@@ -122,16 +110,17 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            // Error
             if (_errorMessage.isNotEmpty)
               Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(_errorMessage, style: TextStyle(color: Colors.red)),
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  _errorMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-            // Login Button
             ElevatedButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -142,7 +131,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     _passwordController.text == savedPassword) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => Homebored()),
+                    MaterialPageRoute(
+                      builder:
+                          (context) => Homebored(
+                            navigatorKey: GlobalKey<NavigatorState>(),
+                          ),
+                    ),
                   );
                 } else {
                   setState(() {
@@ -152,22 +146,25 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pink,
-                minimumSize: Size(270, 50),
+                minimumSize: const Size(270, 50),
               ),
-              child: Text("Log In", style: TextStyle(color: Colors.white)),
+              child: const Text(
+                "Log In",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-            SizedBox(height: 20),
 
-            // Signup Redirect
+            const SizedBox(height: 20),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Don’t have an account? ",
                   style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                 ),
                 TextButton(
-                  child: Text("Sign up now"),
+                  child: const Text("Sign up now"),
                   onPressed: () {
                     Navigator.push(
                       context,

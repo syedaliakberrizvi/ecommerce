@@ -1,6 +1,5 @@
 import 'package:final_project/homebored.dart';
 import 'package:final_project/login.dart';
-import 'package:final_project/product-detail.dart';
 import 'package:final_project/profile.dart';
 import 'package:final_project/wishlist.dart';
 import 'package:flutter/material.dart';
@@ -28,31 +27,85 @@ class BottomBarExample extends StatefulWidget {
 class _BottomBarExampleState extends State<BottomBarExample> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [Homebored(), Wishlist(), Wishlist(), Profile()];
+  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
+
+  List<Widget> get _pages => [
+    _buildTabNavigator(
+      Homebored(navigatorKey: _navigatorKeys[0], onBackPressed: () {}),
+      0,
+    ),
+    _buildTabNavigator(
+      Wishlist(
+        navigatorKey: _navigatorKeys[1],
+        onBackPressed: () => _onItemTapped(0),
+      ),
+      1,
+    ),
+    _buildTabNavigator(
+      Wishlist(
+        navigatorKey: _navigatorKeys[2],
+        onBackPressed: () => _onItemTapped(0),
+      ),
+      2,
+    ),
+    _buildTabNavigator(
+      Profile(
+        navigatorKey: _navigatorKeys[3],
+        onBackPressed: () => _onItemTapped(0),
+      ),
+      3,
+    ),
+  ];
+
+  Widget _buildTabNavigator(Widget child, int index) {
+    return Navigator(
+      key: _navigatorKeys[index],
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(builder: (_) => child, settings: settings);
+      },
+    );
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (_selectedIndex == index) {
+      _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: AnimatedBottomBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          final currentNavigator = _navigatorKeys[_selectedIndex].currentState!;
+          if (currentNavigator.canPop()) {
+            currentNavigator.pop();
+          } else if (_selectedIndex != 0) {
+            setState(() {
+              _selectedIndex = 0;
+            });
+          } else {
+            Navigator.of(context).maybePop();
+          }
+        }
+      },
+      child: Scaffold(
+        body: IndexedStack(index: _selectedIndex, children: _pages),
+        bottomNavigationBar: AnimatedBottomBar(
+          selectedIndex: _selectedIndex,
+          onItemTapped: _onItemTapped,
+        ),
       ),
     );
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(debugShowCheckedModeBanner: false, home: SplashA());
-//   }
-// }

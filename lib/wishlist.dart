@@ -1,11 +1,21 @@
+import 'package:final_project/widgets/custom_header.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/widgets/product_card.dart';
 
 class Wishlist extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+  final VoidCallback? onBackPressed;
+
+  const Wishlist({required this.navigatorKey, this.onBackPressed});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: CustomHeader(
+          showDrawerIcon: true,
+          onBackPressed: onBackPressed,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -13,16 +23,6 @@ class Wishlist extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top Row
-                  Row(
-                    children: [
-                      Icon(Icons.line_weight_rounded),
-                      Spacer(),
-                      Image.asset("projectimages/stylish.png"),
-                      Spacer(),
-                      Icon(Icons.account_circle_outlined),
-                    ],
-                  ),
                   SizedBox(height: 15),
 
                   // Search Field

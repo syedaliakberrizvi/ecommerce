@@ -1,3 +1,4 @@
+import 'package:final_project/widgets/custom_header.dart';
 import 'package:final_project/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class ProductDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: CustomHeader(showDrawerIcon: false),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
